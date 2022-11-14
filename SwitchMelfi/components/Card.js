@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Button, TextInput } from "react-native";
 
 const Card=({children})=> {
+
     return (
         <View style={styles.input}>
             {children}

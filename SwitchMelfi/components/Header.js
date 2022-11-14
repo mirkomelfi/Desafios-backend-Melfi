@@ -1,6 +1,6 @@
-const Header=(title)=> {
+const Header=(title,newStyles)=> {
     return (
-      <View style={styles.header}>
+      <View style={{...styles.header,...newStyles}}>
         <Text>{title} </Text>
       </View>
     );
