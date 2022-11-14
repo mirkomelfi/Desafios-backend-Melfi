@@ -1,4 +1,5 @@
 import Card from "../components/Card";
+import { Button,Text } from "react-native";
 
 const GameScreen=()=> {
 

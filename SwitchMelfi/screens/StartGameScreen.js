@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Pressable, TextInput, TouchableWithoutFeedback } from "react-native";
+import { Button, Pressable, TouchableWithoutFeedback,Text } from "react-native";
 import Input from "../components/Input";
 
 const StartGameScreen=(onStartGame)=> {
