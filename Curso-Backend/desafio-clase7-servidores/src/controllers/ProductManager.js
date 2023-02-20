@@ -35,7 +35,6 @@ class ProductManager {
                     aux[indice].thumbnails=p.thumbnails
                     aux[indice].status=p.status
                     aux[indice].category=p.category
-                    aux[indice].stock=p.stock
                     fs.writeFileSync(this.path,JSON.stringify(aux))
                     return "El producto fue actualizado correctamente en base de datos"
                 }else{
