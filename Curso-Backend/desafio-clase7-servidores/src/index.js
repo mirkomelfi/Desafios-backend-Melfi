@@ -50,13 +50,14 @@ io.on("connection", (socket) => {
 */
 app.use('/', express.static(__dirname + '/public'))
 app.use('/realTimeProducts', express.static(__dirname + '/public'))
+
 app.use('/realTimeProducts', routerSocket)
 app.use('/api/products', routerProduct)
 app.use('/api/carts', routerCart)
 
 
 let productosHome=[{"id":1,"title":"Iphone 8","description":"Soporta IOS 8 o +","price":1200,"thumbnails":["iphone8.jpg"],"status":true,"category":"Celulares","code":"122563456","stock":1345},{"id":2,"title":"Iphone X","description":"Soporta IOS 14 o +","price":1200,"thumbnails":["iphoneX.jpg"],"status":true,"category":"Celulares","code":"122222563456","stock":34}]
-  
+
 app.get("/",(req,res)=>{
   res.render("home",{
     productosHome
