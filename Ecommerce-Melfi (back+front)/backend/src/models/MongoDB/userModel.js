@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     rol: {
         type: String,
-        required: true
+        default: "User"
     },
     password: {
         type: String,
@@ -30,7 +30,6 @@ const userSchema = new Schema({
     idCart: {
         type: Schema.Types.ObjectId,
         ref: 'Carts',
-        required: true
     }
 })
 

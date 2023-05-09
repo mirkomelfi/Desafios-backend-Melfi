@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import routerUsers from './routes/users.js'
 import routerSession from './routes/session.js'
+import routerProduct from './routes/product.js'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 import cors from 'cors'
@@ -23,7 +24,7 @@ const corsOptions = { //Reviso si el cliente que intenta ingresar a mi servidor 
 const app = express()
 
 app.use(express.json())
-app.use(cors(corsOptions))
+//app.use(cors(corsOptions))
 
 const connectionMongoose = async () => {
     await mongoose.connect(process.env.MONGODBURL, {
@@ -38,8 +39,11 @@ connectionMongoose()
 app.use(cookieParser(process.env.JWT_SECRET))
 app.use(passport.initialize())
 initializePassport(passport)
+
 app.use('/users', routerUsers)
 app.use('/auth', routerSession)
+app.use('/product', routerProduct)
+
 
 
 app.listen(4000, () => {

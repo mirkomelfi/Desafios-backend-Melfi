@@ -2,6 +2,7 @@ import { createUser, findUserByEmail } from "../services/UserServices.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { validatePassword, createHash } from "../utils/bcrypt.js";
+import { createCart } from "../services/CartServices.js";
 
 export const loginUser = async (req, res, next) => {
     try {
@@ -59,7 +60,7 @@ export const registerUser = async (req, res) => {
             res.status(401).send("Usuario ya registrado")
         } else {
             const hashPassword = createHash(password)
-            const newUser = await createUser({ first_name, last_name, email, age, password: hashPassword })
+            const newUser = await createUser({ first_name, last_name, email, age, password: hashPassword})
             console.log(newUser)
             const token = jwt.sign({ user: { id: newUser._id } }, process.env.JWT_SECRET);
             res.cookie('jwt', token, { httpOnly: true });
