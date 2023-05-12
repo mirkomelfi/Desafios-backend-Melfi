@@ -54,14 +54,16 @@ export const loginUser = async (req, res, next) => {
 }
 export const registerUser = async (req, res) => {
     try {
-        const { first_name, last_name, email, age, password } = req.body
+        const { first_name, last_name, rol, email, age, password } = req.body
         const userBDD = await findUserByEmail(email)
         if (userBDD) {
             res.status(401).send("Usuario ya registrado")
         } else {
             const hashPassword = createHash(password)
-            const newUser = await createUser({ first_name, last_name, email, age, password: hashPassword})
-            console.log(newUser)
+            const newCart= await createCart()
+            const idCartUser=newCart.id
+            
+            const newUser = await createUser({ first_name, last_name, rol, email, age, password: hashPassword, idCart:idCartUser})
             const token = jwt.sign({ user: { id: newUser._id } }, process.env.JWT_SECRET);
             res.cookie('jwt', token, { httpOnly: true });
             res.status(201).json({ token });

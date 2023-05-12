@@ -10,6 +10,7 @@ export const findUsers = async () => {
     }
 }
 
+
 export const findUserById = async (id) => {
     try {
         const user = await userModel.findById(id)
@@ -27,6 +28,7 @@ export const findUserByEmail = async (email) => {
         throw new Error(error)
     }
 }
+
 
 export const createUser = async (user) => {
     //Errores de datos a enviar a mi BDD
