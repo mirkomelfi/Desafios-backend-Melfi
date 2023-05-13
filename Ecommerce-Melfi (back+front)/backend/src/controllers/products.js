@@ -115,7 +115,7 @@ export const autenticateRolUsr = async (req, res, next) => {
                     req.user = userBDD
                     const rol=userBDD.rol
                     if (rol==="User"){
-                        return res.status(200).send("OK")
+                        next()
                     }else{
                         return res.status(200).send("Solo Rol usuario tiene acceso")
                     }
@@ -148,7 +148,7 @@ export const autenticateRolAdmin = async (req, res, next) => {
                     req.user = userBDD
                     const rol=userBDD.rol
                     if (rol==="Admin"){
-                        return res.status(200).send("OK")
+                        next()
                     }else{
                         return res.status(200).send("Solo Rol Admin tiene acceso")
                     }

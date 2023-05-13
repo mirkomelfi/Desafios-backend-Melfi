@@ -20,7 +20,7 @@ export const findCartById = async (id) => {
 }
 
 
-export const addProductCart = async (idCart,idProduct,quantity) => {
+export const addProductCart = async (idCart,idProduct,quantity) => { //agregar try catch
     const cart= await cartModel.findById(idCart)
     const arrayProductos= cart.products
 
@@ -32,8 +32,8 @@ export const addProductCart = async (idCart,idProduct,quantity) => {
     }
 
     cart.products=arrayProductos
-
-    return cart
+    const cartUpdated= await cartModel.findByIdAndUpdate(idCart,cart)
+    return cartUpdated
 }
 /*
 export const addProductsCart = async (idCart,newArrayProducts) => {
