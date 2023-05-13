@@ -1,11 +1,10 @@
-import { addProductCart } from "../services/CartServices.js"
+import { addProductToCart } from "../services/CartServices.js"
 
-export const addProduct = async (req, res) => {
+export const addProductCart = async (req, res) => {
     try {
         //idCart,idProduct,quantity
         const {idCart,idProduct,quantity}= req.body
-        console.log(idCart,idProduct,quantity)
-        const cart = await addProductCart(idCart,idProduct,quantity)
+        const cart = await addProductToCart(idCart,idProduct,quantity)
         res.status(200).json({
             message: "Carrito actualizado",
         })

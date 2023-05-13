@@ -1,8 +1,66 @@
-import { findProducts, findProductById, createProduct } from "../services/ProductServices.js";
 import { createUser, findUserByEmail,findUserById } from "../services/UserServices.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { validatePassword, createHash } from "../utils/bcrypt.js";
+import { createProduct, modifyProduct, removeProduct, findProducts, findProductById} from "../services/ProductServices.js";
+
+export const addProduct = async (req,res) => {
+    //Errores de datos a enviar a mi BDD
+    try {
+        const newproduct = await createProduct(req.body)
+        return res.status(200).json({
+            message: "Producto añadido"
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+
+export const updateProduct = async (req, res) => {
+    const { id } = req.params
+    const product = req.body
+
+    try {
+        const newProduct = await modifyProduct(id, product)
+
+        if (newProduct) {
+            return res.status(200).json({
+                message: "Producto actualizado"
+            })
+        }
+
+        res.status(200).json({
+            message: "Producto no encontrado"
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+
+}
+
+
+export const deleteProduct = async (req, res) => {
+    const { id } = req.params
+    try {
+        const product = await removeProduct(id)
+        if (product) {
+            return res.status(200).json({
+                message: "Producto eliminado"
+            })
+        }
+        res.status(200).json({
+            message: "Producto no encontrado"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+}
 
 /*
 export const getProducts = async (req, res) => {

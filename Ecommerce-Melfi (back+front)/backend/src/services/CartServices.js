@@ -20,20 +20,25 @@ export const findCartById = async (id) => {
 }
 
 
-export const addProductCart = async (idCart,idProduct,quantity) => { //agregar try catch
-    const cart= await cartModel.findById(idCart)
-    const arrayProductos= cart.products
+export const addProductToCart = async (idCart,idProduct,quantity) => { //agregar try catch
+// falta: si no ingresa alguno de los 3 parametros ERROR!!
+    try {
+        const cart= await cartModel.findById(idCart)
+        const arrayProductos= cart.products
 
-    if (arrayProductos.some(producto=>producto.productId==idProduct)){
-        const productWanted= arrayProductos.find(prod=>prod.productId==idProduct)
-        productWanted.quantity=productWanted.quantity+parseInt(quantity)
-    }else{
-        arrayProductos.push({productId:idProduct,quantity:quantity}) // checkear
+        if (arrayProductos.some(producto=>producto.productId==idProduct)){
+            const productWanted= arrayProductos.find(prod=>prod.productId==idProduct)
+            productWanted.quantity=productWanted.quantity+parseInt(quantity)
+        }else{
+            arrayProductos.push({productId:idProduct,quantity:quantity}) // checkear
+        }
+
+        cart.products=arrayProductos
+        const cartUpdated= await cartModel.findByIdAndUpdate(idCart,cart)
+        return cartUpdated
+    } catch (error) {
+        throw new Error(error)
     }
-
-    cart.products=arrayProductos
-    const cartUpdated= await cartModel.findByIdAndUpdate(idCart,cart)
-    return cartUpdated
 }
 /*
 export const addProductsCart = async (idCart,newArrayProducts) => {

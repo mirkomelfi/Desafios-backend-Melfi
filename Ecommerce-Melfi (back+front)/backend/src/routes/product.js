@@ -1,19 +1,18 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/session.js";
-import { autenticateRolAdmin, autenticateRolUsr } from "../controllers/products.js";
-import { createProduct, deleteProduct } from "../services/ProductServices.js";
-import { addProduct } from "../controllers/cart.js";
+import { autenticateRolAdmin, autenticateRolUsr, deleteProduct, updateProduct, addProduct, getProducts, getProductById} from "../controllers/products.js";
+import { addProductCart } from "../controllers/cart.js";
+
 
 const routerProduct = Router()
 
-//routerProduct.post("/regis", registerUser)
-//routerProduct.post("/login", loginUser)
+routerProduct.get("/", getProducts)
+routerProduct.get("/:id", getProductById)
 
+routerProduct.post("/add", autenticateRolUsr, addProductCart)
 
-routerProduct.post("/", autenticateRolUsr, addProduct)
-
-routerProduct.post("/create", autenticateRolAdmin, createProduct)
-//routerProduct.post("/delete", autenticateRolAdmin, deleteProduct)
+routerProduct.post("/create", autenticateRolAdmin, addProduct)
+routerProduct.put("/:id", autenticateRolAdmin, updateProduct)
+routerProduct.delete("/:id", autenticateRolAdmin, deleteProduct)
 
 
 
