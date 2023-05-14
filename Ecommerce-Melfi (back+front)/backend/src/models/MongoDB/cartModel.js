@@ -5,6 +5,7 @@ const cartSchema = new Schema({
         type: Number,
         unique: true
     },*/
+    
     products: [{
         productId: {
             type: Schema.Types.ObjectId,

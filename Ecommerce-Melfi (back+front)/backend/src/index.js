@@ -5,9 +5,11 @@ import cookieParser from 'cookie-parser'
 import routerUsers from './routes/users.js'
 import routerSession from './routes/session.js'
 import routerProduct from './routes/product.js'
+import routerCart from './routes/cart.js'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 import cors from 'cors'
+
 
 const whiteList = ['http://localhost:3000'] //Rutas validas a mi servidor
 
@@ -43,6 +45,7 @@ initializePassport(passport)
 app.use('/users', routerUsers)
 app.use('/auth', routerSession)
 app.use('/product', routerProduct)
+app.use('/cart', routerCart)
 
 
 

@@ -1,4 +1,29 @@
-import { addProductToCart } from "../services/CartServices.js"
+import { addProductToCart,checkStock,findCartById,findCarts } from "../services/CartServices.js"
+
+export const getCarts = async (req, res) => {
+    try {
+        const carts = await findCarts()
+        res.status(200).send(carts)
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+}
+
+export const getCartById = async (req, res) => {
+    console.log(req.params)
+    const {cid}=req.params
+    try {
+        const cart = await findCartById(cid)
+        res.status(200).send(cart)
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+}
+
 
 export const addProductCart = async (req, res) => {
     try {
@@ -14,3 +39,18 @@ export const addProductCart = async (req, res) => {
     }
 
 }
+
+export const finalizarCompra = async (req, res) => {
+    const {cid}=req.params 
+    try {
+        const cart = await checkStock(cid)
+        res.status(200).json({
+            cart_comprado: cart,
+        })
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+}
+

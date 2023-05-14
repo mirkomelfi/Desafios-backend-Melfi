@@ -233,8 +233,9 @@ export const getProducts = async (req, res) => {
 }
 
 export const getProductById = async (req, res) => {
+    const {id}=req.params
     try {
-        const product = await findProductById()
+        const product = await findProductById(id)
         res.status(200).send(product)
 
     } catch (error) {
