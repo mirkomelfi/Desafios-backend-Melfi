@@ -40,38 +40,31 @@ export const checkStock = async (idCart) => {
  
         productsCart.forEach(productCart=>{
             const prod= productsBDD.find(product=>product.id==productCart.productId)
-            console.log(prod)
+
             if(prod){
                 if(prod.stock>=productCart.quantity){
-
                     const newQuantity=prod.stock-productCart.quantity
-                    prod={...prod,stock:newQuantity}
-                    console.log("prod",prod)
+                    prod.stock=newQuantity
 
                     productosBDDupdated.push(prod) // para actualizar el stock en la BDD de los prod comprados
                     finalCart.push(productCart) // cart con productos finales
-
-                    console.log("productosBDDupdated",productosBDDupdated)
-                    //const newProd=await productModel.findByIdAndUpdate(prod.id,stock:newQuantity)
-                    console.log("devuelve array cuyos prod tienen stock y actualiza la cantidad en BDD (falta el update)")
                 }
                 else{
-                    //const index= productsCart.findIndex(productCart.productId==prod.id)
-                   // const newArray= productsCart.slice(index)
-                    
-                    cartNoStock.push(productCart) // cart con productos excluidos
-                    console.log("devuelve array cuyos prod no tienen stock suficiente")
+                    cartNoStock.push(productCart) // array con productos excluidos
                 }
+            }else{
+                console.log("no entre")
             }
         })
 
-        for (i=0;i<productosBDDupdated.length;i++){
-            await productModel.findByIdAndUpdate(productosBDDupdated[i].id,productosBDDupdated)
+        //actualizar producto en BDD
+        for (let i=0;i<productosBDDupdated.length;i++){
+            await productModel.findByIdAndUpdate(productosBDDupdated[i].id,productosBDDupdated[i])
         }
 
-        await cartModel.findByIdAndUpdate(idCart,finalCart) // necesario? o en el return?
+        //await cartModel.findByIdAndUpdate(idCart,finalCart) // necesario? o en el return?
 
-        return finalCart
+        return [finalCart,cartNoStock] // devuelve los productos que sí se pudieron comprar
     } catch (error) {
         throw new Error(error)
     }

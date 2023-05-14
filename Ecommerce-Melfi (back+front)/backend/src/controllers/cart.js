@@ -43,10 +43,25 @@ export const addProductCart = async (req, res) => {
 export const finalizarCompra = async (req, res) => {
     const {cid}=req.params 
     try {
-        const cart = await checkStock(cid)
-        res.status(200).json({
-            cart_comprado: cart,
-        })
+        const [cartFinal,cartCancelado] = await checkStock(cid)
+        if (cartFinal.length!==0){
+            if (cartCancelado.length!==0){
+                res.status(200).json({
+                    message: "Carrito comprado, pero algunos productos no contaban con stock",
+                    cartComprado: cartFinal,
+                    cartSinStock:cartCancelado
+                })
+            }else{
+                res.status(200).json({
+                    message: "Carrito comprado",
+                    cartComprado: cartFinal
+                })
+            }
+        }else{
+            res.status(200).json({
+                message: "No se pudo realizar la compra, chequee el stock",
+            })
+        }
 
     } catch (error) {
         res.status(500).send(error)
