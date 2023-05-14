@@ -36,7 +36,7 @@ export const checkStock = async (idCart) => {
         const productsBDD= await productModel.find() // me traigo los productos de la BDD para hacer la comparacion luego del stock
         const cartNoStock= []
         const productosBDDupdated= []
-        const finalCart=[]
+        const finalCart={id:idCart,products:[]}
  
         productsCart.forEach(productCart=>{
             const prod= productsBDD.find(product=>product.id==productCart.productId)
@@ -44,19 +44,22 @@ export const checkStock = async (idCart) => {
             if(prod){
                 if(prod.stock>=productCart.quantity){
                     const newQuantity=prod.stock-productCart.quantity
+                    //console.log(prod.price,productCart.quantity)
+                    const subtotal= prod.price*productCart.quantity
+                    productCart={...productCart._doc,subtotal:subtotal}
                     prod.stock=newQuantity
-
+                    //console.log(subtotal)
+                    productCart.subtotal=subtotal
+                    //console.log(productCart)
                     productosBDDupdated.push(prod) // para actualizar el stock en la BDD de los prod comprados
-                    finalCart.push(productCart) // cart con productos finales
+                    finalCart.products.push(productCart) // cart con productos finales
                 }
                 else{
                     cartNoStock.push(productCart) // array con productos excluidos
                 }
-            }else{
-                console.log("no entre")
             }
-        })
 
+        })
         //actualizar producto en BDD
         for (let i=0;i<productosBDDupdated.length;i++){
             await productModel.findByIdAndUpdate(productosBDDupdated[i].id,productosBDDupdated[i])
@@ -124,16 +127,16 @@ export const updateProductCart  = async (idCart,idProduct,newQuantity)=> {
     }
     return -1
 }
-
-export const deleteElementsCart = async (idCart)=> {
-    const cart= await cartModel.findById(idCart)
-    if(cart){
-        cart.products=[]
-        return cart
-    }
-    return -1
-}
 */
+export const deleteElementsCart = async (idCart)=> {
+    try {
+        const cart= await cartModel.findByIdAndUpdate(idCart,{products:[]})
+    } catch (error) {
+        throw new Error(error)
+    }
+    
+}
+
 export const createCart = async (cart) => { // implementar en el registro del usuario??
     //Errores de datos a enviar a mi BDD
     try {
