@@ -10,6 +10,8 @@ routerProduct.get("/:id", getProductById)
 
 routerProduct.post("/add", autenticateRolUsr, addProductCart)
 
+routerProduct.post("/mockingproducts", )
+
 routerProduct.post("/create", autenticateRolAdmin, addProduct)
 routerProduct.put("/:id", autenticateRolAdmin, updateProduct)
 routerProduct.delete("/:id", autenticateRolAdmin, deleteProduct)

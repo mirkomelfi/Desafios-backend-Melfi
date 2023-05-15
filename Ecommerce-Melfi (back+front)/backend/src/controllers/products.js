@@ -2,7 +2,27 @@ import { createUser, findUserByEmail,findUserById } from "../services/UserServic
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { validatePassword, createHash } from "../utils/bcrypt.js";
-import { createProduct, modifyProduct, removeProduct, findProducts, findProductById} from "../services/ProductServices.js";
+import { createProduct, modifyProduct, removeProduct, findProducts, findProductById,createMockingProducts} from "../services/ProductServices.js";
+
+
+export const addMockingProducts = async (req,res) => {
+    //Errores de datos a enviar a mi BDD
+    try {
+        const mockingproducts = createMockingProducts()
+        if (mockingproducts){
+        return res.status(200).json({
+            message: "Productos añadidos"
+        })}
+        else{
+            return res.status(200).json({
+                message: "No se pudieron añadir los productos"
+            })
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 export const addProduct = async (req,res) => {
     //Errores de datos a enviar a mi BDD

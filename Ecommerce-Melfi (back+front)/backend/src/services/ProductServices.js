@@ -1,5 +1,5 @@
 import productModel from "../models/MongoDB/productModel.js";
-
+import {faker} from "@faker-js/faker"
 
 export const findProducts = async () => {
     try {
@@ -8,6 +8,36 @@ export const findProducts = async () => {
     } catch (error) {
         throw new Error(error)
     }
+}
+
+const createRandomProducts = () => {
+    return{
+        productId: faker.database.mongodbObjectId(),
+        title:faker.commerce.productName,
+        description:faker.commerce.productDescription,
+        price:faker.commerce.price(50,9000,0,"$"),
+        stock:faker.datatype.number({min:10,max:100,precision:1}),
+        status:true,
+        code:faker.datatype.uuid(),
+        category:1,
+        thumbnails:[]
+    }
+}
+
+export const createMockingProducts = async () => {
+
+    try {
+        const products=[]
+        for (let i=0;i<100;i++){
+            products.push(createRandomProducts())
+        }
+
+        const productsBDD= productModel.insertMany(products)
+        return productsBDD
+    } catch (error) {
+        throw new Error(error)
+    }
+
 }
 
 
