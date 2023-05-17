@@ -3,6 +3,9 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import { validatePassword, createHash } from "../utils/bcrypt.js";
 import { createCart } from "../services/CartServices.js";
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/enums.js";
+import { generateUserErrorInfo } from "../services/errors/info.js";
 
 export const loginUser = async (req, res, next) => {
     try {
@@ -55,6 +58,14 @@ export const loginUser = async (req, res, next) => {
 export const registerUser = async (req, res) => {
     try {
         const { first_name, last_name, rol, email, age, password } = req.body
+
+        CustomError.createError({
+            name:"User creation error",
+            cause:generateUserErrorInfo ({first_name, last_name, rol, email, age, password}),
+            message:"Error Trying to create User",
+            code:EErrors.INVALID_TYPES_ERROR
+        })
+
         const userBDD = await findUserByEmail(email)
 
         if (userBDD) {

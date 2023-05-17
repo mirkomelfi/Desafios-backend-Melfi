@@ -1,15 +1,8 @@
 import cartModel from "../models/MongoDB/cartModel.js";
 import productModel from "../models/MongoDB/productModel.js";
-
-/*
-findCartById
-addProductCart
-addProductsCart
-deleteProductCart
-updateProductCart
-deleteElementsCart
-createCart
-*/
+import CustomError from "./errors/CustomError.js";
+import EErrors from "./errors/enums.js";
+import { generateAddProductErrorInfo } from "./errors/info.js";
 
 export const findCarts = async () => {
     try {
@@ -44,13 +37,10 @@ export const checkStock = async (idCart) => {
             if(prod){
                 if(prod.stock>=productCart.quantity){
                     const newQuantity=prod.stock-productCart.quantity
-                    //console.log(prod.price,productCart.quantity)
                     const subtotal= prod.price*productCart.quantity
                     productCart={...productCart._doc,subtotal:subtotal}
                     prod.stock=newQuantity
-                    //console.log(subtotal)
                     productCart.subtotal=subtotal
-                    //console.log(productCart)
                     productosBDDupdated.push(prod) // para actualizar el stock en la BDD de los prod comprados
                     finalCart.products.push(productCart) // cart con productos finales
                 }
@@ -65,20 +55,37 @@ export const checkStock = async (idCart) => {
             await productModel.findByIdAndUpdate(productosBDDupdated[i].id,productosBDDupdated[i])
         }
 
-        //await cartModel.findByIdAndUpdate(idCart,finalCart) // necesario? o en el return?
-
         return [finalCart,cartNoStock] // devuelve los productos que sí se pudieron comprar
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export const addProductToCart = async (idCart,idProduct,quantity) => { //agregar try catch
+export const addProductToCart = async (idCart,idProduct,quantity) => { 
 // falta: si no ingresa alguno de los 3 parametros ERROR!!
     try {
         const cart= await cartModel.findById(idCart)
         const arrayProductos= cart.products
-        
+
+        const productsBDD= await productModel.find()
+
+        const prod= productsBDD.find(product=>product.id==idProduct)
+
+        if(prod){
+            if(prod.stock<parseInt(quantity)){
+                CustomError.createError({
+                    name:"Add Product to Cart error",
+                    cause:generateAddProductErrorInfo ({stock, quantity}),
+                    message:"Error Trying to Add Product to Cart",
+                    code:EErrors.INVALID_STOCK
+                })
+            }   
+        }
+
+
+
+
         if (arrayProductos.some(producto=>producto.productId==idProduct)){
             const productWanted= arrayProductos.find(prod=>prod.productId==idProduct)
             productWanted.quantity=productWanted.quantity+parseInt(quantity)

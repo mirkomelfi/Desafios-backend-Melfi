@@ -1,8 +1,10 @@
 import { createUser, findUserByEmail,findUserById } from "../services/UserServices.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import { validatePassword, createHash } from "../utils/bcrypt.js";
 import { createProduct, modifyProduct, removeProduct, findProducts, findProductById,createMockingProducts} from "../services/ProductServices.js";
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/enums.js";
+import { generateProductErrorInfo } from "../services/errors/info.js";
 
 
 export const addMockingProducts = async (req,res) => {
@@ -10,14 +12,13 @@ export const addMockingProducts = async (req,res) => {
     try {
         const mockingproducts = createMockingProducts()
         if (mockingproducts){
-        return res.status(200).json({
-            message: "Productos añadidos"
-        })}
-        else{
             return res.status(200).json({
-                message: "No se pudieron añadir los productos"
+                message: "Productos añadidos"
             })
         }
+        res.status(200).json({
+            message: "No se pudieron añadir los productos"
+        })
     } catch (error) {
         throw new Error(error)
     }
@@ -25,14 +26,28 @@ export const addMockingProducts = async (req,res) => {
 
 
 export const addProduct = async (req,res) => {
+
+    const {title,description,code,price,status,stock,category,thumbnails}= req.body
     //Errores de datos a enviar a mi BDD
     try {
+        if (!title||!description||!code||!price||!stock||!category||!thumbnails){
+            CustomError.createError({
+                name:"Product creation error",
+                cause:generateProductErrorInfo ({title,description,code,price,status,stock,category,thumbnails}),
+                message:"Error Trying to create Product",
+                code:EErrors.INVALID_TYPES_ERROR
+            })
+        }
+
         const newproduct = await createProduct(req.body)
+
         return res.status(200).json({
             message: "Producto añadido"
         })
     } catch (error) {
-        throw new Error(error)
+        res.status(500).json({
+            message: error.message
+        })
     }
 }
 

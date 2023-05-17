@@ -9,6 +9,7 @@ import routerCart from './routes/cart.js'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 import cors from 'cors'
+import errorHandler from "./services/errors/index.js"
 
 
 const whiteList = ['http://localhost:3000'] //Rutas validas a mi servidor
@@ -46,6 +47,7 @@ app.use('/users', routerUsers)
 app.use('/auth', routerSession)
 app.use('/product', routerProduct)
 app.use('/cart', routerCart)
+app.use(errorHandler)
 
 
 

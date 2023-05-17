@@ -13,12 +13,12 @@ export const findProducts = async () => {
 const createRandomProducts = () => {
     return{
         productId: faker.database.mongodbObjectId(),
-        title:faker.commerce.productName,
-        description:faker.commerce.productDescription,
-        price:faker.commerce.price(50,9000,0,"$"),
-        stock:faker.datatype.number({min:10,max:100,precision:1}),
+        title:faker.commerce.productName(),
+        description:faker.commerce.productDescription(),
+        price:faker.commerce.price(),
+        stock:faker.number.int({min:10,max:100,precision:1}),
         status:true,
-        code:faker.datatype.uuid(),
+        code:faker.string.uuid(),
         category:1,
         thumbnails:[]
     }
@@ -32,7 +32,8 @@ export const createMockingProducts = async () => {
             products.push(createRandomProducts())
         }
 
-        const productsBDD= productModel.insertMany(products)
+        const productsBDD= await productModel.insertMany(products)
+        
         return productsBDD
     } catch (error) {
         throw new Error(error)
