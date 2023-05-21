@@ -2,14 +2,12 @@ import 'dotenv/config.js'
 import express from 'express'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
-import routerUsers from './routes/users.js'
-import routerSession from './routes/session.js'
-import routerProduct from './routes/product.js'
-import routerCart from './routes/cart.js'
+import router from './routes/index.js'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 import cors from 'cors'
 import errorHandler from "./services/errors/index.js"
+import { addLogger } from './utils/logger.js'
 
 
 const whiteList = ['http://localhost:3000'] //Rutas validas a mi servidor
@@ -43,11 +41,10 @@ app.use(cookieParser(process.env.JWT_SECRET))
 app.use(passport.initialize())
 initializePassport(passport)
 
-app.use('/users', routerUsers)
-app.use('/auth', routerSession)
-app.use('/product', routerProduct)
-app.use('/cart', routerCart)
-app.use(errorHandler)
+app.use(addLogger)
+
+app.use("/", router)
+//app.use(errorHandler)
 
 
 

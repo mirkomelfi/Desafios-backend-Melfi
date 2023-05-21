@@ -68,8 +68,8 @@ export const addProductToCart = async (idCart,idProduct,quantity) => {
         const cart= await cartModel.findById(idCart)
         const arrayProductos= cart.products
 
+        /*
         const productsBDD= await productModel.find()
-
         const prod= productsBDD.find(product=>product.id==idProduct)
 
         if(prod){
@@ -82,7 +82,7 @@ export const addProductToCart = async (idCart,idProduct,quantity) => {
                 })
             }   
         }
-
+        */
 
 
 

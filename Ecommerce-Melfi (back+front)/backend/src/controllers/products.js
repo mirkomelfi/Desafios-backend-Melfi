@@ -30,6 +30,9 @@ export const addProduct = async (req,res) => {
     const {title,description,code,price,status,stock,category,thumbnails}= req.body
     //Errores de datos a enviar a mi BDD
     try {
+
+
+        /*
         if (!title||!description||!code||!price||!stock||!category||!thumbnails){
             CustomError.createError({
                 name:"Product creation error",
@@ -38,6 +41,7 @@ export const addProduct = async (req,res) => {
                 code:EErrors.INVALID_TYPES_ERROR
             })
         }
+        */
 
         const newproduct = await createProduct(req.body)
 

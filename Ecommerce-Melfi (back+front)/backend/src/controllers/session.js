@@ -58,13 +58,15 @@ export const loginUser = async (req, res, next) => {
 export const registerUser = async (req, res) => {
     try {
         const { first_name, last_name, rol, email, age, password } = req.body
-
+        
+        /*
         CustomError.createError({
             name:"User creation error",
             cause:generateUserErrorInfo ({first_name, last_name, rol, email, age, password}),
             message:"Error Trying to create User",
             code:EErrors.INVALID_TYPES_ERROR
         })
+        */
 
         const userBDD = await findUserByEmail(email)
 
