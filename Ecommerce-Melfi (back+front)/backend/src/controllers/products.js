@@ -84,6 +84,11 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     const { id } = req.params
+
+    if (!id){
+        req.logger.warning("No se ingreso un id")
+    }
+
     try {
         const product = await removeProduct(id)
         if (product) {
@@ -263,7 +268,12 @@ export const autenticateRolAdmin = async (req, res, next) => {
 export const getProducts = async (req, res) => {
     try {
         const products = await findProducts()
-        res.status(200).send(products)
+
+        if (products.length!==0){
+            res.status(200).send(products) 
+        }else{
+            res.status(400).send("No hay productos")
+        }
 
     } catch (error) {
         res.status(500).send(error)
@@ -275,7 +285,15 @@ export const getProductById = async (req, res) => {
     const {id}=req.params
     try {
         const product = await findProductById(id)
-        res.status(200).send(product)
+        if (product){
+            if (!product.title||!product.description||!product.code||!product.price||!product.status||!product.stock||!product.category||!product.thumbnails){
+                req.logger.warning(`Faltan propiedades del producto: ${product}`)
+            }
+            res.status(200).send(product) 
+        }else{
+            res.status(400).send("Producto no existente")
+        }
+      
 
     } catch (error) {
         res.status(500).send(error)

@@ -82,6 +82,17 @@ const logger = winston.createLogger({
         }),
     ]
 })
+/*
+if (process.env.LOGGER_SELECTION !== '1') {
+    logger.add(new winston.transports.Console({
+        level: 'debug',
+        format: winston.format.combine(
+            winston.format.colorize({ colors: "green" }),
+            winston.format.simple()
+        )
+    }));
+  }
+*/
 
 export const addLogger = (req, res, next) => {
     req.logger = logger //Poder utilizar el logger definido previamente

@@ -5,16 +5,17 @@ import { findUserById, findUsers } from "../services/UserServices.js"
 export const getCarts = async (req, res) => {
     try {
         const carts = await findCarts()
+        req.logger.debug("Encuentra los carts OK")
         res.status(200).send(carts)
 
     } catch (error) {
+        req.logger.fatal("No encuentra los carts")
         res.status(500).send(error)
     }
 
 }
 
 export const getCartById = async (req, res) => {
-    console.log(req.params)
     const {cid}=req.params
     try {
         const cart = await findCartById(cid)
@@ -44,7 +45,6 @@ export const addProductCart = async (req, res) => {
 
 export const finalizarCompra = async (req, res) => {
     const {cid}=req.params 
-
     try {
         const [cartFinal,cartCancelado] = await checkStock(cid)
 
