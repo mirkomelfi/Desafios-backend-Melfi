@@ -10,7 +10,6 @@ export const findUsers = async () => {
     }
 }
 
-
 export const findUserById = async (id) => {
     try {
         const user = await userModel.findById(id)
@@ -42,3 +41,24 @@ export const createUser = async (user) => {
 }
 
 
+export const modifyUser = async (id, password) => {
+    try {
+        const user = await userModel.findByIdAndUpdate(id, {password})
+        return user
+
+    } catch (error) {
+        throw new Error(error)
+    }
+
+}
+
+
+export const isTokenExpired = (passwordData) => {
+    try {
+        const elapsedTime = Date.now()-passwordData.timeStamp
+        const expirationTime= 60*60*1000
+        return elapsedTime>=expirationTime
+    } catch (error) {
+        throw new Error(error)
+    }
+}
