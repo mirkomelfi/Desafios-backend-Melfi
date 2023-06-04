@@ -103,6 +103,7 @@ export const createNewPassword= async (req,res) => {
         const userBDD= await findUserByEmail(email)
         if (userBDD){
             const passwordCookie=req.signedCookies
+            //console.log(req)
             if (!isTokenExpired(passwordCookie)){ // esta mal el parametro, no se que pasarle
                 if (validatePassword(password, userBDD.password)) {
                     return res.status(400).send("No puedes colocar la misma contraseña")

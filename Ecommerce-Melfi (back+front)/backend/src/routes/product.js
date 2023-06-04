@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { autenticateRolAdmin, autenticateRolUsr, deleteProduct, updateProduct, addProduct, getProducts, getProductById,addMockingProducts} from "../controllers/products.js";
+import { autenticateRolAdminPrem, autenticateRolUsr, deleteProduct, updateProduct, addProduct, getProducts, getProductById,addMockingProducts} from "../controllers/products.js";
 import { addProductCart } from "../controllers/cart.js";
 
 
@@ -12,9 +12,9 @@ routerProduct.post("/add", autenticateRolUsr, addProductCart)
 
 routerProduct.post("/mockingproducts", addMockingProducts)
 
-routerProduct.post("/create", autenticateRolAdmin, addProduct)
-routerProduct.put("/:id", autenticateRolAdmin, updateProduct)
-routerProduct.delete("/:id", autenticateRolAdmin, deleteProduct)
+routerProduct.post("/create", autenticateRolAdminPrem, addProduct)
+routerProduct.put("/:id", autenticateRolAdminPrem, updateProduct)
+routerProduct.delete("/:id", autenticateRolAdminPrem, deleteProduct)
 
 
 

@@ -75,13 +75,22 @@ export const findProductById = async (id) => {
     }
 }
 
+export const findProductByCode = async (code) => {
+    try {
+        const product = await productModel.findOne({ code: code })
+        return product
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 export const createProduct = async (product) => {
     //Errores de datos a enviar a mi BDD
     try {
-        const newproduct = await productModel(product)
-        await newproduct.save()
-        return newproduct
+        const newProduct = await productModel(product)
+        await newProduct.save()
+        return newProduct
     } catch (error) {
         throw new Error(error)
     }

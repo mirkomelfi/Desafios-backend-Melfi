@@ -12,6 +12,7 @@ const productSchema = new Schema({
     },
     code: {
         type: String,
+        index: true,
         required: true,
         unique: true
     },
@@ -22,6 +23,10 @@ const productSchema = new Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    owner: {
+        type: String,
+        default: "Admin"
     },
     stock: {
         type: Number,
