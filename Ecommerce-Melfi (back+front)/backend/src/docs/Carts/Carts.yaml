@@ -1,0 +1,79 @@
+paths:
+  /cart/:
+    get:
+      summary: "Consulta todos los carritos"
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: "Carritos encontrados"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: "Error del servidor al obtener los productos"
+  /cart/{cid}:
+    get:  
+      summary: "Consultar un carrito dado su id"
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: "Id del carrito solicitado"
+        schema: 
+          $type: String
+      responses:
+        "200":
+          description: "Carrito encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart" 
+  /cart/{cid}/purchase:
+    get:
+      summary: "Comprar carrito"
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: "Id del carrito solicitado"
+        schema: 
+          $type: String
+      responses:
+        "200":
+          description: "Carrito comprado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart" 
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: "Id autogenerado"
+        products:
+          type: Array
+          properties: 
+            productId:
+              type: Schema.Types.ObjectId
+              description: "Id de referencia del producto"
+            quantity:
+              type: Number
+              description: "Cantidad del producto agregada al carrito"
+      example:
+        _id: ObjectId("12bb12bb12bb12bb12bb12bb")
+        products: [{
+          productId: ObjectId("13bb13bb12cc13bb13bb13bb"),
+          quantity: 14
+        }]

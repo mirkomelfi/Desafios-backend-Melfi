@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser'
 import router from './routes/index.js'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express'
+import __dirname from './path.js'
 import cors from 'cors'
 import errorHandler from "./services/errors/index.js"
 import { addLogger } from './utils/logger.js'
@@ -44,6 +47,8 @@ initializePassport(passport)
 app.use(addLogger)
 
 app.use("/", router)
+
+
 //app.use(errorHandler)
 
 
