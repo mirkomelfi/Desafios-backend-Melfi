@@ -12,7 +12,7 @@ routerProduct.post("/add", autenticateRolUsr, addProductCart)
 
 routerProduct.post("/mockingproducts", addMockingProducts)
 
-routerProduct.post("/create", autenticateRolAdminPrem, addProduct)
+routerProduct.post("/create", autenticateRolAdminPrem, addProduct) //OK
 routerProduct.put("/:id", autenticateRolAdminPrem, updateProduct)
 routerProduct.delete("/:id", autenticateRolAdminPrem, deleteProduct)
 
