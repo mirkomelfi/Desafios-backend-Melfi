@@ -138,7 +138,7 @@ export const registerUser = async (req, res) => {
             code:EErrors.INVALID_TYPES_ERROR
         })
         */
-
+        let newUser={}
         const userBDD = await findUserByEmail(email)
 
         if (userBDD) {
@@ -146,13 +146,29 @@ export const registerUser = async (req, res) => {
         } else {
             const hashPassword = createHash(password)
 
-            if (rol!=="Admin"){
+            if (!rol||rol=="User"){
                 const newCart= await createCart({products:[]})
                 const idCartUser=newCart.id
-                const newUser = await createUser({ first_name, last_name, rol, email, age, password: hashPassword, idCart:idCartUser})
-            }
+                newUser = await createUser({ 
+                    first_name:first_name, 
+                    last_name:last_name, 
+                    rol: rol,
+                    email:email,
+                    age:age,
+                    password: hashPassword,
+                    idCart:idCartUser
+                })
+            }else{
 
-            const newUser = await createUser({ first_name, last_name, rol, email, age, password: hashPassword})
+                newUser = await createUser({ 
+                    first_name:first_name, 
+                    last_name:last_name, 
+                    rol: rol,
+                    email:email,
+                    age:age,
+                    password: hashPassword
+                })
+            }
 
             const token = jwt.sign({ user: { id: newUser._id } }, process.env.JWT_SECRET);
             res.cookie('jwt', token, { httpOnly: true });
@@ -162,6 +178,17 @@ export const registerUser = async (req, res) => {
 
     } catch (error) {
         res.status(500).send(`Ocurrio un error en Registro User, ${error}`)
+    }
+
+}
+
+export const current = async(req,res) =>{
+    try{
+        const cookie = req.cookies['jwt']
+        const user = jwt.verify(cookie,process.env.JWT_SECRET);
+        if(user) return res.send({status:"success",payload:user})
+    }catch (error) {
+        res.status(500).send(`Ocurrio un error en Current, ${error}`)
     }
 
 }

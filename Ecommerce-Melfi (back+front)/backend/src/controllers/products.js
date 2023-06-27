@@ -91,7 +91,7 @@ export const updateProduct = async (req, res) => {
             })
         }
 
-        res.status(200).json({
+        res.status(400).json({
             message: "Producto no encontrado"
         })
 
@@ -139,7 +139,7 @@ export const deleteProduct = async (req, res) => {
                         message: "Producto eliminado"
                     })
                 }else{
-                    res.status(200).json({
+                    res.status(400).json({
                         message: "Producto no encontrado"
                     })
                 }

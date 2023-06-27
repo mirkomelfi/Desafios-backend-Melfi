@@ -6,7 +6,11 @@ export const getCarts = async (req, res) => {
     try {
         const carts = await findCarts()
         req.logger.debug("Encuentra los carts OK")
-        res.status(200).send(carts)
+        if (carts){res.status(200).send(carts)
+        }else{
+            res.status(400).send("No hay carritos")
+        }
+
 
     } catch (error) {
         req.logger.fatal("No encuentra los carts")
@@ -19,7 +23,12 @@ export const getCartById = async (req, res) => {
     const {cid}=req.params
     try {
         const cart = await findCartById(cid)
-        res.status(200).send(cart)
+        if (cart){
+            res.status(200).send(cart)
+        }else{
+            res.status(400).send("No se encuentra dicho carrito")
+        }
+
 
     } catch (error) {
         res.status(500).send(error)
